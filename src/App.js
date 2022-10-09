@@ -57,8 +57,6 @@ function App() {
              ? <Button variant='contained' type='submit' >Отправить</Button>
              : <Button variant='contained' type='submit' disabled >Отправить</Button>
           }
-          <Button variant='contained' type='submit' >Отправить</Button>
-          
         </form>
     </div>
   );
