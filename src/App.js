@@ -52,11 +52,7 @@ function App() {
             name='lastName'
             label='Фамилия*'
             />
-          {
-            isValid
-             ? <Button variant='contained' type='submit' >Отправить</Button>
-             : <Button variant='contained' type='submit' disabled >Отправить</Button>
-          }
+          <Button variant='contained' type='submit' >Отправить</Button>
         </form>
     </div>
   );
