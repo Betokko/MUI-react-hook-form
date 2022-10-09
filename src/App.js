@@ -1,56 +1,65 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import './App.css';
+import { Controller, useForm } from 'react-hook-form';
+import { TextField, Button } from '@mui/material'
 
 function App() {
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { isValid },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data)
+    reset()
+  };
+
+ const UITextField = ({ label, name }) => {
+   return (
+      <Controller
+        control={control}
+        name={name}
+        defaultValue=''
+        rules={{ 
+          required: 'Обязательное поле', 
+          minLength: { value: 2, message: 'Поле должно содержать не менее 2 символов' }, 
+          maxLength: { value: 10, message: 'Поле должно содержать не более 10 символов' },
+        }}
+        render={({ field, fieldState, formState }) => 
+          <TextField
+            label={label}
+            onChange={evt => { field.onChange(evt) }}
+            value={field.value}
+            error={fieldState.error}
+            helperText={formState.errors[name]?.message}
+          />
+        }
+      />
+   )
+ }
+ 
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <UITextField
+            name='firstName'
+            label='Имя*'
+          />
+          <UITextField
+            name='lastName'
+            label='Фамилия*'
+            />
+          {
+            isValid
+             ? <Button variant='contained' type='submit' >Отправить</Button>
+             : <Button variant='contained' type='submit' disabled >Отправить</Button>
+          }
+          <Button variant='contained' type='submit' >Отправить</Button>
+          
+        </form>
     </div>
   );
 }
